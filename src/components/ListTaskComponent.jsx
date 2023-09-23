@@ -1,29 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { getAllTasks } from '../services/TaskService'
 
 const ListTaskComponent = () => {
 
-    const dummyData = [
-        {
-            "id": 1,
-            "title": "Learn Java",
-            "description": "Learn Java with examples",
-            "completed": false
-        },
-        {
-            "id": 2,
-            "title": "Learn Spring",
-            "description": "Learn Spring with examples",
-            "completed": false
-        },
-        {
-            "id": 3,
-            "title": "Learn Spring Boot",
-            "description": "Learn Spring Boot with examples",
-            "completed": false
-        },
-    ]
+    const [tasks, setTasks] = useState([])
 
-    const [tasks, setTasks] = useState(dummyData)
+    useEffect(() => {
+        listTasks()
+    }, [])
+
+    const listTasks = () => {
+        getAllTasks().then((res) => {
+            setTasks(res.data)
+        }).catch(err => {
+            console.error(err)
+        })
+    }
+
 
     return (
         <div className='container'>
