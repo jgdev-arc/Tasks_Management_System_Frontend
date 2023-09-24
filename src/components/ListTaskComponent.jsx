@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { getAllTasks } from '../services/TaskService'
+import { useNavigate } from 'react-router-dom'
 
 const ListTaskComponent = () => {
 
     const [tasks, setTasks] = useState([])
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         listTasks()
@@ -17,10 +20,20 @@ const ListTaskComponent = () => {
         })
     }
 
+    const addNewTask = () => {
+        navigate('/add-task')
+    }
+
+    const updateTask = (id) => {
+        console.log(id)
+        navigate(`/update-task/${id}`)
+    }
+
 
     return (
         <div className='container'>
             <h2 className='text-center'>List of Tasks</h2>
+            <button className='btn btn-primary mb-2' onClick={addNewTask}>New Task</button>
             <div>
                 <table className='table table-bordered table-striped'>
                     <thead>
@@ -28,6 +41,7 @@ const ListTaskComponent = () => {
                             <th>Task Title</th>
                             <th>Task Description</th>
                             <th>Task Completed</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,6 +51,9 @@ const ListTaskComponent = () => {
                                     <td>{task.title}</td>
                                     <td>{task.description}</td>
                                     <td>{task.completed ? 'YES' : 'NO'}</td>
+                                    <td>
+                                        <button className='btn btn-info' onClick={() => updateTask(task.id)}>Update</button>
+                                    </td>
                                 </tr>
                             )
                         }

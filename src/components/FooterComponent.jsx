@@ -4,7 +4,7 @@ const FooterComponent = () => {
     return (
         <div>
             <footer className='footer'>
-                <p className='text-center'>© 2023 ARC. All rights reserved</p>
+                <p className='text-center'>© 2023 Arc. All rights reserved</p>
             </footer>
         </div>
     )
