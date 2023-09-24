@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getAllTasks } from '../services/TaskService'
+import { completeTask, deleteTask, getAllTasks, incompleteTask } from '../services/TaskService'
 import { useNavigate } from 'react-router-dom'
 
 const ListTaskComponent = () => {
@@ -29,6 +29,30 @@ const ListTaskComponent = () => {
         navigate(`/update-task/${id}`)
     }
 
+    const removeTask = (id) => {
+        deleteTask(id).then((res) => {
+            listTasks()
+        }).catch(err => {
+            console.error(err)
+        })
+    }
+
+    const markCompleteTask = (id) => {
+        completeTask(id).then((res) => {
+            listTasks()
+        }).catch(err => {
+            console.error(err)
+        })
+    }
+
+    const markIncompleteTask = (id) => {
+        incompleteTask(id).then((res) => {
+            listTasks()
+        }).catch(err => {
+            console.error(err)
+        })
+    }
+
 
     return (
         <div className='container'>
@@ -53,6 +77,9 @@ const ListTaskComponent = () => {
                                     <td>{task.completed ? 'YES' : 'NO'}</td>
                                     <td>
                                         <button className='btn btn-info' onClick={() => updateTask(task.id)}>Update</button>
+                                        <button className='btn btn-danger' onClick={() => removeTask(task.id)} style={{ marginLeft: "10px" }}>Delete</button>
+                                        <button className='btn btn-success' onClick={() => markCompleteTask(task.id)} style={{ marginLeft: "10px" }}>Completed</button>
+                                        <button className='btn btn-warning' onClick={() => markIncompleteTask(task.id)} style={{ marginLeft: "10px" }}>Unfinished</button>
                                     </td>
                                 </tr>
                             )

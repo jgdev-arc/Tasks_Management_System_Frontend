@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { saveTask } from '../services/TaskService'
+import { getTask, saveTask, updateTask } from '../services/TaskService'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const TaskComponent = () => {
@@ -17,12 +17,22 @@ const TaskComponent = () => {
         const task = { title, description, completed }
         console.log(task)
 
-        saveTask(task).then((res) => {
-            console.log(res.data)
-            navigate('/tasks')
-        }).catch(err => {
-            console.error(err)
-        })
+        if (id) {
+            updateTask(id, task).then((res) => {
+                navigate('/tasks')
+            }).catch(err => {
+                console.error(err)
+            })
+        } else {
+            saveTask(task).then((res) => {
+                console.log(res.data)
+                navigate('/tasks')
+            }).catch(err => {
+                console.error(err)
+            })
+        }
+
+
     }
 
     const pageTitle = () => {
@@ -32,6 +42,19 @@ const TaskComponent = () => {
             return <h2 className='text-center'>Add Task</h2>
         }
     }
+
+    useEffect(() => {
+        if (id) {
+            getTask(id).then((res) => {
+                console.log(res.data)
+                setTitle(res.data.title)
+                setDescription(res.data.description)
+                setCompleted(res.data.completed)
+            }).catch(err => {
+                console.error(err)
+            })
+        }
+    }, [id])
 
     return (
         <div className='container'>
